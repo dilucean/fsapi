@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fsapi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .links {
+            margin-top: 40px;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>fsapi</h1>
+        <p>Full-stack FastAPI framework with PostgreSQL</p>
+        <div class="links">
+            <a href="/health">Health</a>
+            <a href="/docs">API Docs</a>
+        </div>
+    </div>
+</body>
+</html>
