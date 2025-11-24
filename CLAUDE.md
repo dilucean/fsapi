@@ -69,20 +69,19 @@ async with pool.acquire() as conn:
 
 ### Dynamic Filters
 ```python
+# Default: Just filter in Python
 async def search_items(conn, name=None, status=None):
-    conditions = []
-    params = []
+    rows = await conn.fetch("SELECT * FROM items ORDER BY created_at DESC")
+    items = [dict(r) for r in rows]
 
     if name:
-        conditions.append(f"name ILIKE ${len(params)+1}")
-        params.append(f"%{name}%")
-
+        items = [i for i in items if name.lower() in i["name"].lower()]
     if status:
-        conditions.append(f"status = ${len(params)+1}")
-        params.append(status)
+        items = [i for i in items if i["status"] == status]
 
-    where = " AND ".join(conditions) if conditions else "TRUE"
-    return await conn.fetch(f"SELECT * FROM items WHERE {where}", *params)
+    return items
+
+# Only move filtering to SQL if you measure actual performance problems
 ```
 
 ### Templates (views/)
@@ -210,33 +209,4 @@ def test_create_item(page: Page):
 
 ## Environment Variables
 
-```bash
-APP_NAME=fsapi
-APP_MODE=dev                    # dev = auto-reload, production = no reload
-APP_HOST=0.0.0.0
-APP_PORT=8000
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASS=
-DB_NAME=fsapi
-CORS_ORIGINS=                   # Comma-separated, empty = disabled
-```
-
-## Production Deployment
-
-```bash
-# Run with workers
-uv run uvicorn main:app --host 127.0.0.1 --port 8000 --workers 4
-
-# With systemd (auto-restart)
-# /etc/systemd/system/fsapi.service
-[Service]
-ExecStart=/path/to/uv run uvicorn main:app --host 127.0.0.1 --port 8000 --workers 4
-
-# Use Caddy for reverse proxy (auto HTTPS)
-# /etc/caddy/Caddyfile
-your-domain.com {
-    reverse_proxy localhost:8000
-}
-```
+Check .env or .env.example
